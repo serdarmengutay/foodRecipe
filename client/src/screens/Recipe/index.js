@@ -53,8 +53,8 @@ const Recipe = ({navigation}) => {
     });
     const data = await req.json();
     if (data.status === 'ok') {
+      setQuote(tempQuote);
       setTempQuote('');
-      setQuote(data.quote);
     } else {
       console.log('dataerror=> ', data.error);
     }
