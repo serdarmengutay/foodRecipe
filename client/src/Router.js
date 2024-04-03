@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {Provider, useDispatch} from 'react-redux';
+import React from 'react';
+import {Provider} from 'react-redux';
 import {store} from './redux/store/store';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';

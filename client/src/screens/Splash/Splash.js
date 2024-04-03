@@ -3,17 +3,24 @@ import {useTranslation} from 'react-i18next';
 import {View, Text, StyleSheet} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {initializeThemeAsync} from '../../redux/slices/themeSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Splash = ({navigation}) => {
   const {t} = useTranslation();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(initializeThemeAsync());
+    const checkUser = async () => {
+      const token = await AsyncStorage.getItem('@token');
+      if (token) {
+        navigation.replace('BottomTabNav');
+      } else {
+        navigation.replace('RegistrationNav');
+      }
+    };
 
-    setTimeout(() => {
-      navigation.replace('RegistrationNav');
-    }, 2000);
+    // dispatch(initializeThemeAsync());
+    checkUser();
   }, []);
 
   return (

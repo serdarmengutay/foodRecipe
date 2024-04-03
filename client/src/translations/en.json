@@ -1,4 +1,9 @@
 {
-    "welcome": "Welcome",
-    "change_language": "Change Language"
+    "welcome": "Welcome to Food RecApp",
+    "change_language": "Change Language",
+    "welcome_back": "Welcome Back",
+    "password": "Password",
+    "sign_in": "Sign In",
+    "sign_up": "Sign Up",
+    "already_have_account": "Already have an account?"
 }
