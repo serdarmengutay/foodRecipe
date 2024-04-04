@@ -5,12 +5,15 @@ const mongoose = require("mongoose");
 const User = require("./models/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const multer = require("multer");
+const path = require("path");
 
 app.use(cors());
 app.use(express.json());
 
 mongoose.connect("mongodb://localhost:27017/recipe-app");
 
+/// User Registration
 app.post("/api/register", async (req, res) => {
   console.log(req.body);
   try {
@@ -25,7 +28,7 @@ app.post("/api/register", async (req, res) => {
     res.json({ status: "error", error: "Duplicate email" });
   }
 });
-
+/// User Login
 app.post("/api/login", async (req, res) => {
   try {
     const user = await User.findOne({
@@ -54,6 +57,54 @@ app.post("/api/login", async (req, res) => {
     }
   } catch (error) {
     res.json({ status: "error", error: "Duplicate email" });
+  }
+});
+/// Get User Info
+app.get("/api/user", async (req, res) => {
+  const token = req.headers["x-access-token"];
+  try {
+    const decoded = jwt.verify(token, "secret123");
+    const email = decoded.email;
+    const user = await User.findOne({ email: email });
+
+    return res.json({
+      status: "ok",
+      user: {
+        email: user.email,
+        name: user.name,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ status: "error", error: "invalid token" });
+  }
+});
+/// User Upload Image
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+const upload = multer({ storage: storage });
+
+app.post("/api/upload", upload.single("image"), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ status: "error", error: "No file uploaded" });
+    }
+
+    return res.json({ status: "ok", filename: req.file.filename });
+  } catch (error) {
+    res.status(500).json({ status: "error", error: error.message });
   }
 });
 

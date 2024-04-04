@@ -1,9 +1,9 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Profile from '../screens/Profile';
 import Recipe from '../screens/Recipe';
 import Favorites from '../screens/Favorites';
 import Shop from '../screens/Shop';
+import ProfileStack from './ProfileStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,7 +24,7 @@ const BottomTabNav = () => {
       <Tab.Screen name="Recipe" component={Recipe} />
       <Tab.Screen name="Favorites" component={Favorites} />
       <Tab.Screen name="Shop" component={Shop} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="ProfileStack" component={ProfileStack} />
     </Tab.Navigator>
   );
 };

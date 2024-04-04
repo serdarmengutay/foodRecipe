@@ -5,5 +5,10 @@
     "password": "Password",
     "sign_in": "Sign In",
     "sign_up": "Sign Up",
-    "already_have_account": "Already have an account?"
+    "already_have_account": "Already have an account?",
+    "change_password": "Change Password",
+    "new_password": "New Password",
+    "confirm_password": "Confirm Password",
+    "log_out": "Log Out",
+    "detail": "Details"
 }

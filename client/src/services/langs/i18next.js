@@ -15,6 +15,9 @@ i18next.use(initReactI18next).init({
     },
   },
   compatibilityJSON: 'v3',
+  interpolation: {
+    escapeValue: false, // React içinde HTML ve JSX kullanımını etkinleştirir
+  },
 });
 
 export default i18next;

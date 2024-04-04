@@ -5,5 +5,11 @@
     "password": "Şifre",
     "sign_in": "Giriş Yap",
     "sign_up": "Kayıt Ol",
-    "already_have_an_account": "Zaten hesabınız var mı?"
+    "already_have_an_account": "Zaten hesabınız var mı?",
+    "change_password": "Şifre Değiştir",
+    "new_password": "Yeni Şifre",
+    "confirm_password": "Şifreyi Onayla",
+    "log_out": "Çıkış Yap",
+    "detail": "Detaylar"
+
 }
