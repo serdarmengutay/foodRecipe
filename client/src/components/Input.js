@@ -6,13 +6,13 @@ const Input = props => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{props.label}</Text>
-      <View style={styles.inputContainer}>
+      <View style={props.inputContainer ?? styles.inputContainer}>
         <TextInput
           value={props.value}
           onChangeText={props.onChangeText}
           placeholder={props.placeholder}
           secureTextEntry={props.secureTextEntry}
-          style={styles.input}
+          style={props.style ?? styles.input}
           autoCapitalize="none"
           autoCorrect={false}
           textContentType={props.contentType}

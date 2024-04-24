@@ -1,17 +1,18 @@
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
 const DetailHeader = props => {
   const {t} = useTranslation();
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={() => props.navigation.goBack()}>
-        <Icon name="chevron-left" size={24} />
-      </TouchableOpacity>
+    <TouchableOpacity
+      activeOpacity={0.6}
+      style={styles.container}
+      onPress={() => props.navigation.goBack()}>
+      <Icon name="chevron-left" size={24} />
       <Text style={styles.title}>{t(props.title)}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({

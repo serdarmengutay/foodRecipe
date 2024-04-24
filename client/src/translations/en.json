@@ -10,5 +10,12 @@
     "new_password": "New Password",
     "confirm_password": "Confirm Password",
     "log_out": "Log Out",
-    "detail": "Details"
+    "detail": "Details",
+    "language_changed": "Language changed successfully",
+    "turkish": "Turkish",
+    "english": "English",
+    "log_out_message": "Are you sure you want to log out?",
+    "language_already_selected": "English is already selected",
+    "old_password": "Old Password",
+    "new_password_confirm": "New Password Confirm"
 }

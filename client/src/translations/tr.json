@@ -10,6 +10,16 @@
     "new_password": "Yeni Şifre",
     "confirm_password": "Şifreyi Onayla",
     "log_out": "Çıkış Yap",
-    "detail": "Detaylar"
+    "detail": "Detaylar",
+    "language_changed": "Dil Değiştirildi",
+    "turkish": "Türkçe",
+    "english": "İngilizce",
+    "log_out_message": "Çıkış yapmak istediğinize emin misiniz?",
+    "language_already_selected": "Türkçe zaten seçili",
+    "old_password": "Eski Şifre",
+    "password_changed": "Şifre Değiştirildi",
+    "password_not_match": "Şifreler eşleşmiyor",
+    "password_changed_successfully": "Şifre başarıyla değiştirildi",
+    "new_password_confirm": "Yeni Şifre Tekrar"
 
 }

@@ -74,7 +74,9 @@ const Register = ({navigation}) => {
         <TouchableOpacity
           onPress={() => navigation.navigate('Login')}
           style={styles.alreadyHave}>
-          <Text style={styles.alreadyHaveText}>Already have an account?</Text>
+          <Text style={styles.alreadyHaveText}>
+            {t('already_have_account')}
+          </Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
       <View style={styles.footer}>

@@ -4,27 +4,73 @@ import Recipe from '../screens/Recipe';
 import Favorites from '../screens/Favorites';
 import Shop from '../screens/Shop';
 import ProfileStack from './ProfileStack';
+import Icon from 'react-native-vector-icons/Feather';
+import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNav = () => {
   return (
     <Tab.Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: {
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 1,
-            height: 0,
-          },
-          shadowOpacity: 0.1,
+      screenOptions={({route}) => ({
+        tabBarIcon: ({color, size}) => {
+          let iconName;
+
+          if (route.name === 'Recipe') {
+            iconName = 'book';
+          } else if (route.name === 'Favorites') {
+            iconName = 'heart';
+          } else if (route.name === 'Shop') {
+            iconName = 'shopping-bag';
+          } else if (route.name === 'ProfileStack') {
+            iconName = 'user';
+          }
+
+          return <Icon name={iconName} size={size} color={color} />;
         },
-      }}>
-      <Tab.Screen name="Recipe" component={Recipe} />
-      <Tab.Screen name="Favorites" component={Favorites} />
-      <Tab.Screen name="Shop" component={Shop} />
-      <Tab.Screen name="ProfileStack" component={ProfileStack} />
+        tabBarActiveTintColor: 'orange',
+        tabBarInactiveTintColor: 'lightgray',
+        tabBarShowLabel: false,
+        headerShown: false,
+      })}>
+      <Tab.Screen
+        name="Recipe"
+        component={Recipe}
+        options={{
+          tabBarLabel: 'Recipe',
+        }}
+      />
+      <Tab.Screen
+        name="Favorites"
+        component={Favorites}
+        options={{
+          tabBarLabel: 'Favorites',
+        }}
+      />
+      <Tab.Screen
+        name="Shop"
+        component={Shop}
+        options={{
+          tabBarLabel: 'Shop',
+        }}
+      />
+      <Tab.Screen
+        name="ProfileStack"
+        component={ProfileStack}
+        options={({route}) => ({
+          tabBarLabel: 'Profile',
+          tabBarStyle: (route => {
+            const routeName = getFocusedRouteNameFromRoute(route) ?? '';
+            if (routeName === 'ChangeLanguage') {
+              return {display: 'none'};
+            }
+            if (routeName === 'ChangePassword') {
+              return {display: 'none'};
+            }
+            return {};
+          })(route),
+        })}
+      />
     </Tab.Navigator>
   );
 };

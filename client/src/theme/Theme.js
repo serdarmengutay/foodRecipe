@@ -23,4 +23,5 @@ export const lightTheme = {
   PRIMARY_BUTTON_TEXT_COLOR: '#fff',
   SECONDARY_BUTTON_TEXT_COLOR: '#ccc',
   STATUS_BAR_STYLE: 'dark-content',
+  GRAY: '#bbb',
 };
