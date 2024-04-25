@@ -5,18 +5,21 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  FlatList,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getAllCategories} from '../../redux/slices/categories';
 import {categoryList} from '../../dummydb/db';
+import CategoryCard from '../../components/CategoryCard';
 import {lightTheme} from '../../theme/Theme';
 
 const Recipe = ({navigation}) => {
   const dispatch = useDispatch();
   const categoryData = useSelector(state => state.categories.data.categories);
   const [userName, setUserName] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
     dispatch(getAllCategories());
@@ -39,6 +42,14 @@ const Recipe = ({navigation}) => {
     getUserInfo();
   }, []);
 
+  const handleSelectCategory = category => {
+    setSelectedCategory(category);
+  };
+
+  const chooseCategory = category => {
+    navigation.navigate('RecipeDetail', {data: category});
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -57,6 +68,7 @@ const Recipe = ({navigation}) => {
                   <TouchableOpacity
                     activeOpacity={0.8}
                     style={styles.categoryListBtn}
+                    onPress={() => handleSelectCategory(item.id)}
                     key={index}>
                     <Text style={styles.categoryListBtnText}>{item.name}</Text>
                   </TouchableOpacity>
@@ -64,6 +76,22 @@ const Recipe = ({navigation}) => {
               })}
             </ScrollView>
           </View>
+          {selectedCategory === 1 && (
+            <View style={styles.categoryContainer}>
+              <FlatList
+                data={categoryData}
+                keyExtractor={item => item.id}
+                renderItem={({item}) => {
+                  return (
+                    <CategoryCard
+                      item={item}
+                      chooseCategory={() => chooseCategory(item)}
+                    />
+                  );
+                }}
+              />
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -83,13 +111,13 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     width: '100%',
-    paddingHorizontal: 20,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
     marginTop: 20,
+    paddingHorizontal: 20,
   },
   headerText: {
     color: lightTheme.PRIMARY_TEXT_COLOR,
@@ -98,6 +126,7 @@ const styles = StyleSheet.create({
   },
   categoryList: {
     marginTop: 20,
+    paddingHorizontal: 20,
   },
   categoryListBtn: {
     backgroundColor: 'orange',
@@ -111,5 +140,9 @@ const styles = StyleSheet.create({
   categoryListBtnText: {
     color: lightTheme.PRIMARY_BACKGROUND_COLOR,
     fontWeight: 600,
+  },
+  categoryContainer: {
+    marginTop: 20,
+    paddingHorizontal: 10,
   },
 });

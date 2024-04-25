@@ -4,6 +4,7 @@ import Recipe from '../screens/Recipe';
 import Favorites from '../screens/Favorites';
 import Shop from '../screens/Shop';
 import ProfileStack from './ProfileStack';
+import RecipeStack from './RecipeStack';
 import Icon from 'react-native-vector-icons/Feather';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 
@@ -16,7 +17,7 @@ const BottomTabNav = () => {
         tabBarIcon: ({color, size}) => {
           let iconName;
 
-          if (route.name === 'Recipe') {
+          if (route.name === 'RecipeStack') {
             iconName = 'book';
           } else if (route.name === 'Favorites') {
             iconName = 'heart';
@@ -34,11 +35,18 @@ const BottomTabNav = () => {
         headerShown: false,
       })}>
       <Tab.Screen
-        name="Recipe"
-        component={Recipe}
-        options={{
+        name="RecipeStack"
+        component={RecipeStack}
+        options={({route}) => ({
           tabBarLabel: 'Recipe',
-        }}
+          tabBarStyle: (route => {
+            const routeName = getFocusedRouteNameFromRoute(route) ?? '';
+            if (routeName === 'RecipeDetail') {
+              return {display: 'none'};
+            }
+            return {};
+          })(route),
+        })}
       />
       <Tab.Screen
         name="Favorites"
