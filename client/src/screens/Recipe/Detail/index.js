@@ -27,6 +27,11 @@ const RecipeDetail = ({route, navigation}) => {
     return item?.strMeal?.toLowerCase().includes(search.toLowerCase());
   });
 
+  const handleSelectFood = id => {
+    console.log(id);
+    navigation.navigate('Food', {id: id});
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <DetailHeader navigation={navigation} title={t(data.strCategory)} />
@@ -48,10 +53,16 @@ const RecipeDetail = ({route, navigation}) => {
           <FlashList
             data={filterData}
             renderItem={({item}) => {
-              return <FoodCard item={item} />;
+              return (
+                <FoodCard
+                  item={item}
+                  onPress={() => handleSelectFood(item.idMeal)}
+                />
+              );
             }}
             showsVerticalScrollIndicator={false}
             estimatedItemSize={50}
+            keyExtractor={item => item.idMeal}
             numColumns={2}
           />
         </View>

@@ -44,6 +44,9 @@ const BottomTabNav = () => {
             if (routeName === 'RecipeDetail') {
               return {display: 'none'};
             }
+            if (routeName === 'Food') {
+              return {display: 'none'};
+            }
             return {};
           })(route),
         })}
