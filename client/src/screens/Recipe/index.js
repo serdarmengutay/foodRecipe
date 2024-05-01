@@ -50,6 +50,8 @@ const Recipe = ({navigation}) => {
     navigation.navigate('RecipeDetail', {data: category});
   };
 
+  console.log(categoryData);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -70,7 +72,9 @@ const Recipe = ({navigation}) => {
                     style={styles.categoryListBtn}
                     onPress={() => handleSelectCategory(item.id)}
                     key={index}>
-                    <Text style={styles.categoryListBtnText}>{item.name}</Text>
+                    <Text key={item.id} style={styles.categoryListBtnText}>
+                      {item.name}
+                    </Text>
                   </TouchableOpacity>
                 );
               })}

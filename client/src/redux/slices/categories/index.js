@@ -1,4 +1,4 @@
-import {createAsyncThunk} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {CallApi} from '../../../services';
 import {createSliceModule} from '../../store/createSliceModule';
 
@@ -7,9 +7,26 @@ export const getAllCategories = createAsyncThunk('allCategories', async () => {
     url: `/categories.php`,
     method: 'GET',
   };
-  const response = await CallApi(config);
-  return response;
+  return await CallApi(config);
 });
 
+export const getFoodsByCategory = createAsyncThunk(
+  'foodsByCategory',
+  async category => {
+    const config = {
+      url: `/filter.php?c=${category}`,
+      method: 'GET',
+    };
+    return await CallApi(config);
+  },
+);
+
 const allCategoriesSlice = createSliceModule('allCategories', getAllCategories);
-export default allCategoriesSlice.reducer;
+const foodByCategorySlice = createSliceModule(
+  'foodByCategory',
+  getFoodsByCategory,
+);
+
+const allCategoryReducer = allCategoriesSlice.reducer;
+const foodByCategoryReducer = foodByCategorySlice.reducer;
+export {allCategoryReducer, foodByCategoryReducer};
