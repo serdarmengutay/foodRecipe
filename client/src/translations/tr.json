@@ -21,5 +21,7 @@
     "password_not_match": "Şifreler eşleşmiyor",
     "password_changed_successfully": "Şifre başarıyla değiştirildi",
     "new_password_confirm": "Yeni Şifre Tekrar",
-    "search": "Ara"
+    "search": "Ara",
+    "instruction": "Hazırlanışı",
+    "ingredients": "Malzemeler"
 }

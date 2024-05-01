@@ -18,5 +18,7 @@
     "language_already_selected": "English is already selected",
     "old_password": "Old Password",
     "new_password_confirm": "New Password Confirm",
-    "search": "Search"
+    "search": "Search",
+    "instruction": "Instructions",
+    "ingredients": "Ingredients"
 }
