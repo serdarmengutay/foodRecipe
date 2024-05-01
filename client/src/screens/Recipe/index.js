@@ -50,8 +50,6 @@ const Recipe = ({navigation}) => {
     navigation.navigate('RecipeDetail', {data: category});
   };
 
-  console.log(categoryData);
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView

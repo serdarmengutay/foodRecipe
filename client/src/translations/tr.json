@@ -20,6 +20,6 @@
     "password_changed": "Şifre Değiştirildi",
     "password_not_match": "Şifreler eşleşmiyor",
     "password_changed_successfully": "Şifre başarıyla değiştirildi",
-    "new_password_confirm": "Yeni Şifre Tekrar"
-
+    "new_password_confirm": "Yeni Şifre Tekrar",
+    "search": "Ara"
 }

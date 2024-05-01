@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {createAsyncThunk} from '@reduxjs/toolkit';
 import {CallApi} from '../../../services';
 import {createSliceModule} from '../../store/createSliceModule';
 
