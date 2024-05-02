@@ -13,11 +13,21 @@ export const getFoodRecipeById = createAsyncThunk(
   },
 );
 
+export const getFoodRandomly = createAsyncThunk('foodRandom', async () => {
+  const config = {
+    url: `/random.php`,
+    method: 'GET',
+  };
+  return await CallApi(config);
+});
+
 const foodRecipeByIdSlice = createSliceModule(
   'foodRecipeById',
   getFoodRecipeById,
 );
+const foodRandomSlice = createSliceModule('foodRandom', getFoodRandomly);
 
 const foodRecipeByIdReducer = foodRecipeByIdSlice.reducer;
+const foodRandomReducer = foodRandomSlice.reducer;
 
-export {foodRecipeByIdReducer};
+export {foodRecipeByIdReducer, foodRandomReducer};

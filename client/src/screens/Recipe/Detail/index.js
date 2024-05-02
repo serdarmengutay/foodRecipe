@@ -28,7 +28,6 @@ const RecipeDetail = ({route, navigation}) => {
   });
 
   const handleSelectFood = id => {
-    console.log(id);
     navigation.navigate('Food', {id: id});
   };
 
