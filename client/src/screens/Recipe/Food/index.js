@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   ActivityIndicator,
   ImageBackground,
   Dimensions,
   ScrollView,
   TouchableOpacity,
   Linking,
+  Animated,
 } from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {lightTheme} from '../../../theme/Theme';
@@ -23,7 +23,9 @@ const Food = ({route, navigation}) => {
   const dispatch = useDispatch();
   const foodRecipe = useSelector(state => state.foodRecipe);
   const [isLoading, setIsLoading] = useState(true);
-  const [showInstructions, setShowInstructions] = useState(true); // State for showing instructions or ingredients
+  const [showInstructions, setShowInstructions] = useState(true);
+
+  const scrollA = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     dispatch(getFoodRecipeById(id))
@@ -36,100 +38,112 @@ const Food = ({route, navigation}) => {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={{
-        paddingBottom: 30,
-      }}
-      showsVerticalScrollIndicator={false}
-      style={styles.container}>
-      {isLoading ? (
-        <ActivityIndicator size="large" color={lightTheme.PRIMARY_COLOR} />
-      ) : (
-        <View>
-          <View style={styles.header}>
-            <ImageBackground
-              style={styles.foodImage}
-              borderBottomRightRadius={45}
-              borderBottomLeftRadius={45}
-              source={{
-                uri: foodRecipe?.data?.meals[0]?.strMealThumb,
-              }}></ImageBackground>
-          </View>
-          <View style={styles.foodDetailContainer}>
-            <View style={styles.detailHeader}>
-              <View>
-                <Text style={styles.strMeal}>
-                  {foodRecipe?.data?.meals[0]?.strMeal}
-                </Text>
-                <View style={styles.areaContainer}>
-                  <Text style={styles.strArea}>
-                    {foodRecipe?.data?.meals[0]?.strArea}
+    <View style={styles.container}>
+      <Animated.ScrollView
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollA}}}],
+          {
+            useNativeDriver: true,
+          },
+        )}
+        contentContainerStyle={{
+          paddingBottom: 30,
+        }}
+        showsVerticalScrollIndicator={false}
+        style={styles.container}>
+        {isLoading ? (
+          <ActivityIndicator size="large" color={lightTheme.PRIMARY_COLOR} />
+        ) : (
+          <View>
+            <View style={styles.header}>
+              <Animated.Image
+                style={styles.foodImage(scrollA)}
+                borderBottomRightRadius={45}
+                borderBottomLeftRadius={45}
+                source={{
+                  uri: foodRecipe?.data?.meals[0]?.strMealThumb,
+                }}
+              />
+            </View>
+            <View style={styles.foodDetailContainer}>
+              <View style={styles.detailHeader}>
+                <View>
+                  <Text style={styles.strMeal}>
+                    {foodRecipe?.data?.meals[0]?.strMeal}
                   </Text>
-                  <Text style={styles.strArea}>/</Text>
-                  <Text style={styles.strArea}>
-                    {foodRecipe?.data?.meals[0]?.strTags}
+                  <View style={styles.areaContainer}>
+                    <Text style={styles.strArea}>
+                      {foodRecipe?.data?.meals[0]?.strArea}
+                    </Text>
+                    <Text style={styles.strArea}> / </Text>
+                    <Text style={styles.strArea}>
+                      {foodRecipe?.data?.meals[0]?.strTags}
+                    </Text>
+                  </View>
+                </View>
+                <TouchableOpacity
+                  activeOpacity={0.9}
+                  onPress={() =>
+                    handleWatchYoutube(foodRecipe?.data?.meals[0]?.strYoutube)
+                  }
+                  style={styles.watchYoutubeBtn}>
+                  <Icon name="youtube-play" size={25} color="#FF0000" />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.tabContainer}>
+                <TouchableOpacity
+                  style={[
+                    styles.tabButton,
+                    showInstructions && styles.activeTab,
+                  ]}
+                  onPress={() => setShowInstructions(true)}>
+                  <Text style={styles.tabText}>{t('instruction')}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.tabButton,
+                    !showInstructions && styles.activeTab,
+                  ]}
+                  onPress={() => setShowInstructions(false)}>
+                  <Text style={styles.tabText}>{t('ingredients')}</Text>
+                </TouchableOpacity>
+              </View>
+              {showInstructions ? (
+                <View style={styles.instructionContainer}>
+                  <Text style={styles.instructionText}>
+                    {foodRecipe?.data?.meals[0]?.strInstructions}
                   </Text>
                 </View>
-              </View>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={() =>
-                  handleWatchYoutube(foodRecipe?.data?.meals[0]?.strYoutube)
-                }
-                style={styles.watchYoutubeBtn}>
-                <Icon name="youtube-play" size={25} color="#FF0000" />
-              </TouchableOpacity>
+              ) : (
+                <View style={styles.ingredientsContainer}>
+                  {Object.keys(foodRecipe?.data?.meals[0]).map(key => {
+                    if (
+                      key.includes('strIngredient') &&
+                      foodRecipe?.data?.meals[0][key]
+                    ) {
+                      return (
+                        <View key={key} style={styles.ingredientItem}>
+                          <Text style={styles.ingredientText}>
+                            {foodRecipe?.data?.meals[0][key]}
+                          </Text>
+                          <Text style={styles.ingredientText}>
+                            {
+                              foodRecipe?.data?.meals[0][
+                                `strMeasure${key.split('strIngredient')[1]}`
+                              ]
+                            }
+                          </Text>
+                        </View>
+                      );
+                    }
+                  })}
+                </View>
+              )}
             </View>
-            <View style={styles.tabContainer}>
-              <TouchableOpacity
-                style={[styles.tabButton, showInstructions && styles.activeTab]}
-                onPress={() => setShowInstructions(true)}>
-                <Text style={styles.tabText}>{t('instruction')}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.tabButton,
-                  !showInstructions && styles.activeTab,
-                ]}
-                onPress={() => setShowInstructions(false)}>
-                <Text style={styles.tabText}>{t('ingredients')}</Text>
-              </TouchableOpacity>
-            </View>
-            {showInstructions ? (
-              <View style={styles.instructionContainer}>
-                <Text style={styles.instructionText}>
-                  {foodRecipe?.data?.meals[0]?.strInstructions}
-                </Text>
-              </View>
-            ) : (
-              <View style={styles.ingredientsContainer}>
-                {Object.keys(foodRecipe?.data?.meals[0]).map(key => {
-                  if (
-                    key.includes('strIngredient') &&
-                    foodRecipe?.data?.meals[0][key]
-                  ) {
-                    return (
-                      <View key={key} style={styles.ingredientItem}>
-                        <Text style={styles.ingredientText}>
-                          {foodRecipe?.data?.meals[0][key]}
-                        </Text>
-                        <Text style={styles.ingredientText}>
-                          {
-                            foodRecipe?.data?.meals[0][
-                              `strMeasure${key.split('strIngredient')[1]}`
-                            ]
-                          }
-                        </Text>
-                      </View>
-                    );
-                  }
-                })}
-              </View>
-            )}
           </View>
-        </View>
-      )}
-    </ScrollView>
+        )}
+      </Animated.ScrollView>
+    </View>
   );
 };
 
@@ -139,12 +153,32 @@ const styles = StyleSheet.create({
     backgroundColor: lightTheme.PRIMARY_BACKGROUND_COLOR,
   },
   header: {},
-  foodImage: {
+  foodImage: scrollA => ({
     width: '100%',
     height: Dimensions.get('screen').height / 3,
     justifyContent: 'center',
     alignItems: 'center',
-  },
+    transform: [
+      {
+        translateY: scrollA.interpolate({
+          inputRange: [-Dimensions.get('screen').height / 3, 0],
+          outputRange: [-Dimensions.get('screen').height / 3, 0],
+          extrapolate: 'clamp',
+        }),
+      },
+      {
+        scale: scrollA.interpolate({
+          inputRange: [
+            -Dimensions.get('screen').height / 3,
+            0,
+            Dimensions.get('screen').height / 3,
+          ],
+          outputRange: [2, 1, 1],
+          extrapolate: 'clamp',
+        }),
+      },
+    ],
+  }),
   foodDetailContainer: {
     padding: 20,
   },
@@ -155,9 +189,8 @@ const styles = StyleSheet.create({
   },
   areaContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    width: 120,
     marginTop: 5,
   },
   strMeal: {
